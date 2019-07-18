@@ -1,18 +1,26 @@
+
+sudo: required
 language: java
+
 jdk:
   - oraclejdk8
-services:
-  - mongodb
-addons:
-  postgresql: "9.3"
-install:
-  - sh -c 'mvn -B -q install -DskipTests=true'
-before_script:
-  - mysql -u root -e "source travis/mysql.sql"
-  - psql -U postgres -f travis/postgresql.sql  
-  - psql -c 'create extension postgis;' -d querydsl -U postgres
-  - ./travis/cubrid.sh
-  - ./travis/firebird.sh
-script:
-  - sh -c 'mvn -B test -Pall,travis,examples'
 
+
+script:
+  - mvn clean cobertura:cobertura -Dtest=CUBRIDLiteralsSuiteTest#setUp -DfailIfNoTests=false
+
+before_deploy:
+- tar -zcvf coverage-result.tar.gz /home/travis/build/leusonmario/querydsl/target/site/cobertura
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "C26quiIVfMQfP7uKAe1laecAnK6Y3RkCJJzw4xXFRr2LY31n70JjYxDu7jmvXL/LAT8kx2dS/9QK0mJmGHAk0mXaYB+D7vk8WE/rJKqpayNS8deSSqdh8iRYm4s7V/PcQ4DfOL3mE1qs5xyK5YdR2Wi8POhbPjg4+c9HM7xTTohXeAH0/EvAAVUUFJtSFOLxGvCntZus1AX+WDH3BmZa6QgK7T4cEZbYnuJbyyM9fGRufJbww0ImcBpK08xYkd8FKhLyKu1xWOTz1/vNr7Xc40rvjQYAa0thYXY5UF3majZsmarFYBgvIAwspVNMHuAcBMa9oha7iyXhQCoRN4fxBTcd+d+wxuJ3sVqNwumG0zrCwjtVyTxDOCJW9po54CQYcY+I5j5K04DaNhAbKCPB7IaK4glOvl2ptikG5g88gPida3m4suCVEtKcj2ue+JaHrPEDa3l0yWRP5DmDNJrIbKHYpFVxO1AU4oQelq/deha7iskL3bHwqERge5Nt2Sb2d1MJK5Dyr5LAFjdjKlOjFOzSBUvhsIzHdn6MEq1hptlR5q3m+3TZkdo+rKu4mCPoaDryXDlPwYhzq/sROBZgFMI1B3TnWjYzfz6woc+RbEfQL9IgDDt5OAJFLtplIog9vA11jGU+KHxxmg7MYqh0mVyL9GMPiRcLFh1sqaIjAoQ="
+
+
+  file: coverage-result.tar.gz
+  file_glob: true
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
