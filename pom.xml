@@ -219,6 +219,7 @@
               </goals>
               <inherited>true</inherited>
               <configuration>
+<testFailureIgnore>true</testFailureIgnore>
                 <instructions>
                   <Import-Package>
                     ${osgi.import.package}
@@ -229,7 +230,18 @@
             </execution>
           </executions>
         </plugin>
-      </plugins>      
+      <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+              <format>xml</format>
+              <maxmem>256m</maxmem>
+              <!-- aggregated reports for multi-module projects -->
+              <aggregate>true</aggregate>
+          </configuration>
+         </plugin>
+        </plugins>      
     </pluginManagement>
     
     <plugins>
@@ -390,6 +402,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+<testFailureIgnore>true</testFailureIgnore>
           <argLine>-Xms256m -Xmx512m</argLine>
           <excludedGroups>${excludedGroups}</excludedGroups>
         </configuration>
@@ -459,7 +472,18 @@
           </dependency>
         </dependencies>
       </plugin>
-    </plugins>
+    <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+              <format>xml</format>
+              <maxmem>256m</maxmem>
+              <!-- aggregated reports for multi-module projects -->
+              <aggregate>true</aggregate>
+          </configuration>
+         </plugin>
+        </plugins>
   </build>
 
   <repositories>
@@ -613,6 +637,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
+<testFailureIgnore>true</testFailureIgnore>
               <excludes>
                 <exclude>**/*$*</exclude>
                 <exclude>**/DB2*SuiteTest.java</exclude>
@@ -621,6 +646,17 @@
               </excludes>
             </configuration>
           </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+              <format>xml</format>
+              <maxmem>256m</maxmem>
+              <!-- aggregated reports for multi-module projects -->
+              <aggregate>true</aggregate>
+          </configuration>
+         </plugin>
         </plugins>
       </build>
     </profile>
@@ -643,6 +679,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
+<testFailureIgnore>true</testFailureIgnore>
               <disableXmlReport>true</disableXmlReport>
               <printSummary>false</printSummary>
               <excludes>
@@ -664,6 +701,17 @@
               </properties>
             </configuration>
           </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+              <format>xml</format>
+              <maxmem>256m</maxmem>
+              <!-- aggregated reports for multi-module projects -->
+              <aggregate>true</aggregate>
+          </configuration>
+         </plugin>
         </plugins>
       </build>
     </profile>
